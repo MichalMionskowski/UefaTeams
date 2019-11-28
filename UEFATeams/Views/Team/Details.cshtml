@@ -1,0 +1,88 @@
+﻿@model UEFATeams.Models.TeamDetailsModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Team Details</h2>
+
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.team.TeamId)
+    <table>
+        <tr>
+            <td>
+                <img src="@Url.Content(String.Format("http://img.uefa.com/imgml/TP/teams/logos/70x70/{0}.png", Model.team.TeamId))" />
+            </td>
+            <td>
+                <a href="@String.Format($"https://www.uefa.com/teamsandplayers/teams/club={Model.team.TeamId}/profile/index.html")">@Model.team.Name</a>
+            </td>
+        </tr>
+
+        <tr>
+            <div class="form-group">
+                <td>
+                    @Html.LabelFor(model => model.team.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.team.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.team.Name, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group">
+                <td>
+                    @Html.LabelFor(model => model.team.Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.team.Country, new SelectList(Model.countries.Select(country => country.Name), Model.team.Country), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.team.Country, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+            </div>
+        </tr>
+        <tr>
+            <div class="form-group">
+                <td>
+                    @Html.LabelFor(model => model.team.Eliminated, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.team.Eliminated)
+                            @Html.ValidationMessageFor(model => model.team.Eliminated, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </td>
+
+            </div>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+    }
+
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
